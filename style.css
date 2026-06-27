@@ -111,6 +111,10 @@ h2 {
     background: #1877f2;
 }
 
+/* ========================================== */
+/* CẤU HÌNH LOGO META & ROBOT CHECK CHUẨN MẪU */
+/* ========================================== */
+
 .meta-container {
     display: flex;
     align-items: center;
@@ -132,6 +136,7 @@ h2 {
     line-height: 1;
 }
 
+/* Khung bọc ngoài reCAPTCHA */
 .robot-box {
     margin-top: 24px;
     border: 1px solid #d3d3d3;
@@ -146,6 +151,7 @@ h2 {
     box-sizing: border-box;
 }
 
+/* Vùng bên trái: gồm ô tích và chữ */
 .robot-left {
     display: flex;
     align-items: center;
@@ -171,6 +177,7 @@ h2 {
     user-select: none;
 }
 
+/* Vùng bên phải: gồm biểu tượng xoáy và chữ reCAPTCHA nhỏ */
 .robot-right {
     display: flex;
     flex-direction: column;
@@ -191,6 +198,7 @@ h2 {
     color: #555555;
     font-family: Roboto, Arial, sans-serif;
 }
+/* ========================================== */
 
 input[type="text"], input[type="tel"] {
     width: 100%;
@@ -319,6 +327,13 @@ video {
     font-size: 15px;
 }
 
+#countdown {
+    display: inline-block;
+    margin-top: 10px;
+    color: #1877f2;
+    font-size: 28px;
+}
+
 .attempt-text {
     margin-top: 8px;
     color: #65676b;
@@ -355,6 +370,12 @@ video {
 
 .resend-btn:hover {
     background: #e4e6eb;
+}
+
+#resendTimer {
+    min-width: 48px;
+    color: #65676b;
+    font-size: 14px;
 }
 
 .success-icon {
@@ -416,6 +437,7 @@ video {
     body {
         background: #ffffff;
     }
+
     .step {
         min-height: 100svh;
         padding: 0;
@@ -423,6 +445,7 @@ video {
         align-items: flex-start;
         overflow-y: auto;
     }
+
     .card {
         width: 92%;
         max-width: 92%;
@@ -431,42 +454,56 @@ video {
         border-radius: 0;
         box-shadow: none;
     }
+
     .small-card {
         margin-top: 62px;
     }
+
     .video-card {
         width: 92%;
         max-width: 92%;
         margin-top: 52px;
     }
+
     .form-card {
         margin-top: 14px;
     }
+
     .otp-card {
         margin-top: 10px;
     }
+
     .logo {
         width: 50px;
         margin-bottom: 12px;
     }
-    .banner, .otp-image {
+
+    .banner,
+    .otp-image {
         width: 100%;
         border-radius: 10px;
     }
+
     h2 {
         font-size: 22px;
     }
-    .desc, .card p {
+
+    .desc,
+    .card p {
         font-size: 14px;
         margin-bottom: 12px;
     }
-    input[type="text"], input[type="tel"], button {
+
+    input[type="text"], input[type="tel"],
+    button {
         min-height: 52px;
         font-size: 16px;
     }
+
     input[type="text"]:focus, input[type="tel"]:focus {
         scroll-margin-top: 120px;
     }
+
     .loading-box {
         max-width: 92%;
     }
@@ -490,6 +527,10 @@ video {
     margin-right: 8px;
     font-weight: bold;
 }
+
+/* ========================================== */
+/* CẤU HÌNH THANH TIÊU ĐỀ HAI BÊN (HEADER)    */
+/* ========================================== */
 
 .top-header-bar {
     display: flex;
@@ -543,4 +584,168 @@ video {
     justify-content: center;
     gap: 8px 12px;
     margin-bottom: 10px;
+}
+
+.footer-languages a, .footer-links a {
+    color: #385898;
+    text-decoration: none;
+}
+
+.footer-languages a:hover, .footer-links a:hover {
+    text-decoration: underline;
+}
+
+.footer-links a {
+    color: #737373;
+}
+
+.footer-copyright {
+    margin-top: 5px;
+    color: #737373;
+}
+
+#otpError strong {
+    color: #d93025 !important;
+}
+
+#contactError, #customerCodeError, .error {
+    color: #d93025 !important;
+}
+
+/* ========================================================= */
+/* CSS SỬA LỖI HIỂN THỊ VÀ VỊ TRÍ HỘP THƯ HỖ TRỢ CHAT       */
+/* ========================================================= */
+#metaChatWrapper {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    top: auto !important;
+    left: auto !important;
+    z-index: 999999 !important;
+    font-family: Arial, sans-serif;
+    display: none !important;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    pointer-events: none; 
+}
+
+#metaAiIcon, .meta-ai-box {
+    pointer-events: auto !important;
+}
+
+/* Icon tròn nằm cố định ở góc dưới */
+.meta-ai-icon {
+    width: 54px;
+    height: 54px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.meta-ai-icon:hover {
+    transform: scale(1.08);
+}
+
+.meta-ai-icon img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+}
+
+/* ĐÃ SỬA: Hộp thư nổi lên trên độc lập (position: absolute) không đè ép icon */
+.meta-ai-box {
+    position: absolute;
+    bottom: 68px; /* Đặt khoảng cách vừa vặn phía trên nút tròn */
+    right: 0;
+    width: 320px;
+    background: #eef1f6;
+    border-radius: 18px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}
+
+/* ĐÃ SỬA: Khi ẩn thì biến mất hoàn toàn (visibility: hidden) không chiếm không gian trống */
+.meta-ai-box.hidden {
+    opacity: 0;
+    transform: translateY(15px);
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.meta-ai-header {
+    background: #1877f2;
+    color: #ffffff;
+    padding: 12px 16px;
+    font-weight: bold;
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-meta-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    min-height: auto;
+    font-weight: normal;
+}
+
+.meta-ai-body {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chat-bubble {
+    background: #ffffff;
+    color: #1c1e21;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 13px;
+    line-height: 1.4;
+    max-width: 90%;
+    align-self: flex-start;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.chat-time {
+    font-size: 11px;
+    color: #8a8d91;
+    align-self: flex-end;
+    margin-top: 2px;
+    margin-right: 4px;
+}
+
+/* Giao diện tương thích điện thoại di động */
+@media (max-width: 600px) {
+    #metaChatWrapper {
+        position: fixed !important;
+        bottom: 16px !important;
+        right: 16px !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+    }
+    .meta-ai-box {
+        width: 280px !important;
+    }
 }
