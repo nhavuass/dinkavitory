@@ -613,7 +613,7 @@ video {
 }
 
 /* ========================================================= */
-/* CSS CHUẨN HÓA VỊ TRÍ VÀ HIỂN THỊ CHO META AI              */
+/* CSS CHUẨN HÓA VỊ TRÍ VÀ HIỂN THỊ CHO bequora8              */
 /* ========================================================= */
 #metaChatWrapper {
     position: fixed !important;
@@ -636,7 +636,7 @@ video {
     pointer-events: auto !important;
 }
 
-/* Icon tròn Meta AI phía dưới */
+/* Icon tròn bequora8 phía dưới */
 .meta-ai-icon {
     width: 54px;
     height: 54px;
