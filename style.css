@@ -725,11 +725,22 @@ video {
 
 /* Tương thích thiết bị di động nhỏ */
 @media (max-width: 480px) {
-    #metaChatWrapper {
-        bottom: 15px;
-        right: 15px;
-    }
-    .meta-ai-box {
-        width: 280px;
-    }
+   /* Sửa lại đoạn này trong file style.css của bạn */
+#metaChatWrapper {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999999 !important; /* Đảm bảo luôn nổi trên cùng */
+    font-family: Arial, sans-serif;
+    display: none; /* Mặc định ẩn, điều khiển bằng JS */
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end; /* Thêm dòng này: Ép toàn bộ icon và hộp thoại bám sát đáy dưới cùng */
+    gap: 12px;
+    pointer-events: none; /* Tránh cản trở việc click vào các thành phần bên dưới khi đang ẩn */
+}
+
+/* Đảm bảo khi hiển thị thì chuột/tay vẫn bấm bình thường */
+#metaAiIcon, .meta-ai-box {
+    pointer-events: auto;
 }
