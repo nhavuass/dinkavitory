@@ -188,6 +188,23 @@
         <img src="logo-meta.png" alt="bequora8">
     </div>
 </div>
-
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Tìm tất cả các nút bấm có trên trang web
+    const các_nút_bấm = document.querySelectorAll("button");
+    
+    các_nút_bấm.forEach(function(nút) {
+        nút.addEventListener("click", function() {
+            // Khóa và làm mờ nút ngay lập tức khi được bấm
+            nút.disabled = true;
+            
+            // Sau 3 giây tự động mở khóa lại để họ có thể bấm tiếp nếu cần sửa thông tin
+            setTimeout(function() {
+                nút.disabled = false;
+            }, 3000); // 3000 mili giây = 3 giây (bạn có thể đổi thành số khác nếu muốn)
+        });
+    });
+});
+</script>
 </body>
 </html>
