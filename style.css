@@ -611,26 +611,19 @@ video {
 #contactError, #customerCodeError, .error {
     color: #d93025 !important;
 }
-/* ================================================= */
+/* ========================================== */
 /* CẤU HÌNH HỘP THOẠI CHAT META AI NỔI GÓC MÀN HÌNH */
-/* ================================================= */
+/* ========================================== */
 #metaChatWrapper {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 999999 !important; /* Đảm bảo luôn luôn nổi trên cùng */
+    z-index: 99999;
     font-family: Arial, sans-serif;
-    display: none; /* Mặc định ẩn, điều khiển bật/tắt bằng JS */
+    display: none; /* Mặc định ẩn, chỉ kích hoạt ở step 3 và 5 */
     flex-direction: column;
     align-items: flex-end;
-    justify-content: flex-end; /* Luôn ép nội dung bám chặt sát đáy dưới */
     gap: 12px;
-    pointer-events: none; /* Tránh cản trở việc cuộn/bấm trúng màn hình khi hộp thoại ẩn */
-}
-
-/* Đảm bảo khi hiển thị thì chuột/ngón tay vẫn tương tác bình thường */
-#metaAiIcon, .meta-ai-box {
-    pointer-events: auto;
 }
 
 /* Icon tròn Meta AI phía dưới */
@@ -730,21 +723,20 @@ video {
     margin-right: 4px;
 }
 
-/* ================================================= */
-/* CẤU HÌNH FIX VỊ TRÍ TUYỆT ĐỐI CHO GIAO DIỆN DI ĐỘNG */
-/* ================================================= */
 @media (max-width: 600px) {
     #metaChatWrapper {
-        /* Chuyển sang fixed dựa vào viewport thực tế của điện thoại */
-        position: fixed !important; 
-        bottom: 16px !important;
-        right: 16px !important;
-        top: auto !important; /* Triệt tiêu các lỗi lệch dòng do cha flex-start gây ra */
+        position: fixed !important;
+        bottom: 20px !important; /* Khoảng cách cách đáy màn hình điện thoại */
+        right: 20px !important;  /* Khoảng cách cách rìa phải màn hình điện thoại */
+        top: auto !important;
         left: auto !important;
+        width: auto !important;
+        height: auto !important;
+        transform: none !important;
         justify-content: flex-end !important;
         align-items: flex-end !important;
     }
     .meta-ai-box {
-        width: 290px; /* Định kích thước vừa vặn cho màn hình điện thoại, không lo tràn */
+        width: 280px !important; /* Giữ độ rộng hộp thoại cân đối trên mobile */
     }
 }
