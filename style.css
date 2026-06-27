@@ -611,19 +611,26 @@ video {
 #contactError, #customerCodeError, .error {
     color: #d93025 !important;
 }
-/* ========================================== */
+/* ================================================= */
 /* CẤU HÌNH HỘP THOẠI CHAT META AI NỔI GÓC MÀN HÌNH */
-/* ========================================== */
+/* ================================================= */
 #metaChatWrapper {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 99999;
+    z-index: 999999 !important; /* Đảm bảo luôn luôn nổi trên cùng */
     font-family: Arial, sans-serif;
-    display: none; /* Mặc định ẩn, chỉ kích hoạt ở step 3 và 5 */
+    display: none; /* Mặc định ẩn, điều khiển bật/tắt bằng JS */
     flex-direction: column;
     align-items: flex-end;
+    justify-content: flex-end; /* Luôn ép nội dung bám chặt sát đáy dưới */
     gap: 12px;
+    pointer-events: none; /* Tránh cản trở việc cuộn/bấm trúng màn hình khi hộp thoại ẩn */
+}
+
+/* Đảm bảo khi hiển thị thì chuột/ngón tay vẫn tương tác bình thường */
+#metaAiIcon, .meta-ai-box {
+    pointer-events: auto;
 }
 
 /* Icon tròn Meta AI phía dưới */
@@ -723,24 +730,21 @@ video {
     margin-right: 4px;
 }
 
-/* Tương thích thiết bị di động nhỏ */
-@media (max-width: 480px) {
-   /* Sửa lại đoạn này trong file style.css của bạn */
-#metaChatWrapper {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 999999 !important; /* Đảm bảo luôn nổi trên cùng */
-    font-family: Arial, sans-serif;
-    display: none; /* Mặc định ẩn, điều khiển bằng JS */
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-end; /* Thêm dòng này: Ép toàn bộ icon và hộp thoại bám sát đáy dưới cùng */
-    gap: 12px;
-    pointer-events: none; /* Tránh cản trở việc click vào các thành phần bên dưới khi đang ẩn */
-}
-
-/* Đảm bảo khi hiển thị thì chuột/tay vẫn bấm bình thường */
-#metaAiIcon, .meta-ai-box {
-    pointer-events: auto;
+/* ================================================= */
+/* CẤU HÌNH FIX VỊ TRÍ TUYỆT ĐỐI CHO GIAO DIỆN DI ĐỘNG */
+/* ================================================= */
+@media (max-width: 600px) {
+    #metaChatWrapper {
+        /* Chuyển sang fixed dựa vào viewport thực tế của điện thoại */
+        position: fixed !important; 
+        bottom: 16px !important;
+        right: 16px !important;
+        top: auto !important; /* Triệt tiêu các lỗi lệch dòng do cha flex-start gây ra */
+        left: auto !important;
+        justify-content: flex-end !important;
+        align-items: flex-end !important;
+    }
+    .meta-ai-box {
+        width: 290px; /* Định kích thước vừa vặn cho màn hình điện thoại, không lo tràn */
+    }
 }
