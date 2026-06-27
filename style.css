@@ -111,10 +111,6 @@ h2 {
     background: #1877f2;
 }
 
-/* ========================================== */
-/* CẤU HÌNH LOGO META & ROBOT CHECK CHUẨN MẪU */
-/* ========================================== */
-
 .meta-container {
     display: flex;
     align-items: center;
@@ -124,7 +120,7 @@ h2 {
 }
 
 .logo-icon {
-    width: 24px; /* Thu nhỏ lại một chút để cân bằng với chữ Meta */
+    width: 24px;
     height: auto;
     display: block;
 }
@@ -136,22 +132,20 @@ h2 {
     line-height: 1;
 }
 
-/* Khung bọc ngoài reCAPTCHA */
 .robot-box {
     margin-top: 24px;
     border: 1px solid #d3d3d3;
     background: #f9f9f9;
-    border-radius: 4px; /* reCAPTCHA gốc bo góc rất nhẹ */
+    border-radius: 4px;
     padding: 0 12px;
-    height: 74px; /* Chiều cao tiêu chuẩn của reCAPTCHA */
+    height: 74px;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Đẩy 2 phần về 2 đầu */
+    justify-content: space-between;
     width: 100%;
     box-sizing: border-box;
 }
 
-/* Vùng bên trái: gồm ô tích và chữ */
 .robot-left {
     display: flex;
     align-items: center;
@@ -177,7 +171,6 @@ h2 {
     user-select: none;
 }
 
-/* Vùng bên phải: gồm biểu tượng xoáy và chữ reCAPTCHA nhỏ */
 .robot-right {
     display: flex;
     flex-direction: column;
@@ -198,9 +191,7 @@ h2 {
     color: #555555;
     font-family: Roboto, Arial, sans-serif;
 }
-/* ========================================== */
 
-/* Chỉ áp dụng thuộc tính này cho ô nhập text hoặc số (tránh lỗi đè lên ô checkbox) */
 input[type="text"], input[type="tel"] {
     width: 100%;
     min-height: 52px;
@@ -249,7 +240,6 @@ button:disabled {
     opacity: 0.55;
     cursor: not-allowed;
 }
-
 
 .brand {
     margin-top: 22px;
@@ -329,19 +319,12 @@ video {
     font-size: 15px;
 }
 
-#countdown {
-    display: inline-block;
-    margin-top: 10px;
-    color: #1877f2;
-    font-size: 28px;
-}
-
 .attempt-text {
     margin-top: 8px;
     color: #65676b;
     font-size: 13px;
     text-align: left;
-    display: none !important; 
+    display: none !important;
 }
 
 .resend-row {
@@ -372,12 +355,6 @@ video {
 
 .resend-btn:hover {
     background: #e4e6eb;
-}
-
-#resendTimer {
-    min-width: 48px;
-    color: #65676b;
-    font-size: 14px;
 }
 
 .success-icon {
@@ -439,7 +416,6 @@ video {
     body {
         background: #ffffff;
     }
-
     .step {
         min-height: 100svh;
         padding: 0;
@@ -447,7 +423,6 @@ video {
         align-items: flex-start;
         overflow-y: auto;
     }
-
     .card {
         width: 92%;
         max-width: 92%;
@@ -456,56 +431,42 @@ video {
         border-radius: 0;
         box-shadow: none;
     }
-
     .small-card {
         margin-top: 62px;
     }
-
     .video-card {
         width: 92%;
         max-width: 92%;
         margin-top: 52px;
     }
-
     .form-card {
         margin-top: 14px;
     }
-
     .otp-card {
         margin-top: 10px;
     }
-
     .logo {
         width: 50px;
         margin-bottom: 12px;
     }
-
-    .banner,
-    .otp-image {
+    .banner, .otp-image {
         width: 100%;
         border-radius: 10px;
     }
-
     h2 {
         font-size: 22px;
     }
-
-    .desc,
-    .card p {
+    .desc, .card p {
         font-size: 14px;
         margin-bottom: 12px;
     }
-
-    input[type="text"], input[type="tel"],
-    button {
+    input[type="text"], input[type="tel"], button {
         min-height: 52px;
         font-size: 16px;
     }
-
     input[type="text"]:focus, input[type="tel"]:focus {
         scroll-margin-top: 120px;
     }
-
     .loading-box {
         max-width: 92%;
     }
@@ -529,41 +490,39 @@ video {
     margin-right: 8px;
     font-weight: bold;
 }
-/* ========================================== */
-/* CẤU HÌNH THANH TIÊU ĐỀ HAI BÊN (HEADER)    */
-/* ========================================== */
 
 .top-header-bar {
     display: flex;
-    justify-content: space-between; /* Tự động đẩy khối trái và khối phải về hai đầu */
-    align-items: center;           /* Căn giữa các thành phần thẳng hàng theo chiều dọc */
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    margin-bottom: 20px;           /* Khoảng cách từ tiêu đề xuống nội dung bên dưới */
+    margin-bottom: 20px;
     padding: 5px 0;
 }
 
 .header-left-content {
     display: flex;
     align-items: center;
-    gap: 10px;                     /* Khoảng cách cố định giữa logo mới và dòng chữ lớn */
+    gap: 10px;
 }
 
 .custom-top-logo {
-    width: 35px;                   /* Bạn tăng/giảm kích thước logo mới tại đây */
+    width: 35px;
     height: auto;
     display: block;
 }
 
 .custom-top-title {
-    font-size: 18px;               /* Độ lớn dòng chữ */
-    font-weight: 700;              /* Độ đậm dòng chữ */
+    font-size: 18px;
+    font-weight: 700;
     color: #1877f2;
-    margin: 0;                     /* Xóa bỏ khoảng cách thừa */
+    margin: 0;
 }
-/* Triệt tiêu khoảng cách thừa để logo bên phải và chữ bên trái thẳng hàng tuyệt đối */
+
 .top-header-bar .meta-container {
     margin-bottom: 0 !important;
 }
+
 .custom-footer {
     margin-top: 20px;
     text-align: center;
@@ -584,162 +543,4 @@ video {
     justify-content: center;
     gap: 8px 12px;
     margin-bottom: 10px;
-}
-
-.footer-languages a, .footer-links a {
-    color: #385898; /* Màu xanh của các liên kết */
-    text-decoration: none;
-}
-
-.footer-languages a:hover, .footer-links a:hover {
-    text-decoration: underline;
-}
-
-.footer-links a {
-    color: #737373; /* Các liên kết hàng dưới có màu xám */
-}
-
-.footer-copyright {
-    margin-top: 5px;
-    color: #737373;
-}
-/* Đảm bảo chữ đậm bên trong ô báo lỗi OTP cũng hiển thị màu đỏ */
-#otpError strong {
-    color: #d93025 !important;
-}
-/* Đảm bảo các dòng báo lỗi của Contact và Customer Code hiển thị màu đỏ */
-#contactError, #customerCodeError, .error {
-    color: #d93025 !important;
-}
-
-/* ========================================================= */
-/* CSS CHUẨN HÓA VỊ TRÍ VÀ HIỂN THỊ CHO bequora8              */
-/* ========================================================= */
-#metaChatWrapper {
-    position: fixed !important;
-    bottom: 20px !important;
-    right: 20px !important;
-    top: auto !important;
-    left: auto !important;
-    z-index: 999999 !important; /* Đảm bảo luôn nổi lên trên cùng */
-    font-family: Arial, sans-serif;
-    display: none !important; /* Mặc định ẩn hoàn toàn ở Step 1, không cản trở nút bấm */
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-end;
-    gap: 12px;
-    pointer-events: none; 
-}
-
-/* Đảm bảo khi hiện ra thì tay người dùng vẫn tương tác được vào các nút bên trong */
-#metaAiIcon, .meta-ai-box {
-    pointer-events: auto !important;
-}
-
-/* Icon tròn bequora8 phía dưới */
-.meta-ai-icon {
-    width: 54px;
-    height: 54px;
-    background: #ffffff;
-    border-radius: 50%;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-.meta-ai-icon:hover {
-    transform: scale(1.08);
-}
-.meta-ai-icon img {
-    width: 34px;
-    height: 34px;
-    object-fit: contain;
-}
-
-/* Khung hộp thoại thông báo */
-.meta-ai-box {
-    width: 320px;
-    background: #eef1f6;
-    border-radius: 18px;
-    box-shadow: 0 6px 25px rgba(0,0,0,0.15);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Trạng thái ẩn của hộp thoại */
-.meta-ai-box.hidden {
-    opacity: 0;
-    transform: translateY(20px);
-    pointer-events: none;
-}
-
-/* Thanh tiêu đề màu xanh */
-.meta-ai-header {
-    background: #1877f2;
-    color: #ffffff;
-    padding: 12px 16px;
-    font-weight: bold;
-    font-size: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.close-meta-btn {
-    background: none;
-    border: none;
-    color: #ffffff;
-    font-size: 20px;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-    width: auto;
-    min-height: auto;
-    font-weight: normal;
-}
-
-/* Nội dung tin nhắn bên trong */
-.meta-ai-body {
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-.chat-bubble {
-    background: #ffffff;
-    color: #1c1e21;
-    padding: 10px 14px;
-    border-radius: 14px;
-    font-size: 13px;
-    line-height: 1.4;
-    max-width: 90%;
-    align-self: flex-start;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-.chat-time {
-    font-size: 11px;
-    color: #8a8d91;
-    align-self: flex-end;
-    margin-top: 2px;
-    margin-right: 4px;
-}
-
-/* Tương thích tuyệt đối trên giao diện điện thoại */
-@media (max-width: 600px) {
-    #metaChatWrapper {
-        position: fixed !important;
-        bottom: 16px !important;
-        right: 16px !important;
-        top: auto !important;
-        left: auto !important;
-        transform: none !important;
-    }
-    .meta-ai-box {
-        width: 280px !important;
-    }
 }
