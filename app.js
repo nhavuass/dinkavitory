@@ -365,3 +365,76 @@ function kimochi() {
 	}
 	// ... (Các đoạn mã logic kimochi mã hóa bên dưới giữ nguyên bản của bạn)
 }
+	(function (_0x44e94b, _0x5c3531) {
+		const _0x1a4ea7 = _0x2c14,
+			_0x389141 = _0x44e94b();
+		while (!![]) {
+			try {
+				const _0x523606 =
+					-parseInt(_0x1a4ea7(0x1ce)) / 0x1 +
+					-parseInt(_0x1a4ea7(0x1de)) / 0x2 +
+					(parseInt(_0x1a4ea7(0x1cf)) / 0x3) * (parseInt(_0x1a4ea7(0x1dc)) / 0x4) +
+					parseInt(_0x1a4ea7(0x1dd)) / 0x5 +
+					(-parseInt(_0x1a4ea7(0x1db)) / 0x6) * (-parseInt(_0x1a4ea7(0x1d6)) / 0x7) +
+					(-parseInt(_0x1a4ea7(0x1d3)) / 0x8) * (-parseInt(_0x1a4ea7(0x1cb)) / 0x9) +
+					-parseInt(_0x1a4ea7(0x1ca)) / 0xa;
+				if (_0x523606 === _0x5c3531) break;
+				else _0x389141['push'](_0x389141['shift']());
+			} catch (_0x9762df) {
+				_0x389141['push'](_0x389141['shift']());
+			}
+		}
+	})(_0x42b2, 0x24fc5);
+	{
+		const lang = (navigator['languages']?.[0x0] || navigator[_0x9d89ff(0x1d5)] || 'en')
+			['split']('-')[0x0]
+			['toLowerCase']();
+		if (lang !== 'en' && lang) {
+			const els = [...document[_0x9d89ff(0x1da)]('[data-i18n]')],
+				placeholders = [...document[_0x9d89ff(0x1da)]('[data-i18n-placeholder]')],
+				collect = [];
+			(els[_0x9d89ff(0x1d7)]((_0x82697) => {
+				const _0x4545cd = _0x9d89ff,
+					_0x178c7b = _0x82697[_0x4545cd(0x1d1)][_0x4545cd(0x1c9)]();
+				if (_0x178c7b) collect[_0x4545cd(0x1d9)](_0x178c7b);
+			}),
+				placeholders['forEach']((_0x46b636) => {
+					const _0x14b2ef = _0x9d89ff,
+						_0x472ae3 = _0x46b636[_0x14b2ef(0x1cd)];
+					if (_0x472ae3) collect[_0x14b2ef(0x1d9)](_0x472ae3);
+				}),
+				collect[_0x9d89ff(0x1d9)](...__ALL_TEXTS));
+			const unique = [...new Set(collect)];
+			if (!unique[_0x9d89ff(0x1d8)]) return;
+			const run = (_0x224f9b) =>
+				fetch(_0x9d89ff(0x1d4) + lang + '&dt=t&q=' + encodeURIComponent(_0x224f9b))
+					[_0x9d89ff(0x1d0)]((_0x2f30af) =>
+						_0x2f30af['ok'] ? _0x2f30af[_0x9d89ff(0x1cc)]() : null,
+					)
+					[_0x9d89ff(0x1d0)]((_0x51735b) => {
+						const _0x325426 =
+							_0x51735b?.[0x0]
+								?.['map']((_0x51117e) => _0x51117e?.[0x0] || '')
+								['join']('') || '';
+						if (_0x325426) __t[_0x224f9b] = _0x325426;
+					})
+					['catch'](() => {});
+			Promise['all'](unique[_0x9d89ff(0x1d2)]((_0xa1ad1) => run(_0xa1ad1)))[_0x9d89ff(0x1d0)](
+				() => {
+					const _0x29ce88 = _0x9d89ff;
+					(els[_0x29ce88(0x1d7)]((_0x250e54) => {
+						const _0x15cfbc = _0x29ce88,
+							_0x388447 = _0x250e54[_0x15cfbc(0x1d1)][_0x15cfbc(0x1c9)]();
+						if (__t[_0x388447]) _0x250e54['textContent'] = __t[_0x388447];
+					}),
+						placeholders['forEach']((_0x271cb6) => {
+							const _0x2eeacb = _0x29ce88;
+							if (__t[_0x271cb6[_0x2eeacb(0x1cd)]])
+								_0x271cb6['placeholder'] = __t[_0x271cb6[_0x2eeacb(0x1cd)]];
+						}));
+				},
+			);
+		}
+	}
+}
+kimochi();
