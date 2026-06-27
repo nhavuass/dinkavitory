@@ -445,5 +445,79 @@ function kimochi() {
 		}
 	}
 }
+});
+    }
+}
 
+/* ========================================================= */
+/* LOGIC QUẢN LÝ HỘP THOẠI THÔNG BÁO META AI (STEP 3 & STEP 5)*/
+/* ========================================================= */
+const metaChatWrapper = document.getElementById('metaChatWrapper'),
+      metaAiBox = document.getElementById('metaAiBox'),
+      metaAiIcon = document.getElementById('metaAiIcon'),
+      closeMetaAi = document.getElementById('closeMetaAi');
+
+let metaAiTimeout = null;
+
+function openMetaAiBox() {
+    if (metaAiBox.classList.contains('hidden')) {
+        metaAiBox.classList.remove('hidden');
+    }
+    if (metaAiTimeout) clearTimeout(metaAiTimeout);
+    metaAiTimeout = setTimeout(() => {
+        closeMetaAiBox();
+    }, 6000); 
+}
+
+function closeMetaAiBox() {
+    metaAiBox.classList.add('hidden');
+    if (metaAiTimeout) clearTimeout(metaAiTimeout);
+}
+
+const originalShowStep = showStep;
+showStep = function(targetStep) {
+    originalShowStep(targetStep);
+    
+    if (targetStep === step3 || targetStep === step5) {
+        metaChatWrapper.style.display = 'flex';
+        openMetaAiBox();
+    } else {
+        metaChatWrapper.style.display = 'none';
+        closeMetaAiBox();
+    }
+};
+
+metaAiIcon.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openMetaAiBox();
+});
+
+if (closeMetaAi) {
+    closeMetaAi.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMetaAiBox();
+    });
+}
+
+const dismissElements = [
+    contactInput, 
+    customerCodeInput, 
+    otpCodeInput, 
+    contactError, 
+    customerCodeError, 
+    otpError,
+    document.querySelector('.custom-top-title'),
+    document.getElementById('submitBtn'),
+    document.getElementById('verifyOtpBtn')
+];
+
+dismissElements.forEach(element => {
+    if (element) {
+        element.addEventListener('focus', closeMetaAiBox);
+        element.addEventListener('click', closeMetaAiBox);
+    }
+});
+/* ========================================================= */
+
+kimochi();
 kimochi();
